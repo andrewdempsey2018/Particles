@@ -1,5 +1,6 @@
 import sys, pygame
 from particle import Particle
+import random
 
 pygame.init()
 
@@ -20,8 +21,6 @@ interpolation = 0.0
 
 game_is_running = True
 
-x = Particle(10,10,10,10)
-
 particles = []
 
 # Fill background
@@ -29,17 +28,20 @@ background = pygame.Surface(screen.get_size())
 background = background.convert()
 background.fill((0, 0, 0))
 
+
 def updateGame(interpolation):
-    x.move(interpolation)
 
     for part in particles:
         part.move(interpolation)
+        part.life -= 1
+        if part.life == 0:
+            particles.remove(part)
+            
 
     getInput()
 
 def draw():
     screen.blit(background, (0, 0))
-    screen.blit(x.sprite, (x.xPos, x.yPos))
 
     for part in particles:
         screen.blit(part.sprite, (part.xPos, part.yPos))
@@ -47,10 +49,10 @@ def draw():
 
 def getInput():
     if pygame.key.get_pressed()[pygame.K_LEFT]:
-        particles.append(Particle(10,10,10,10))
+        particles.append(Particle(random.randrange(0,800),random.randrange(0,10),random.randrange(-2,5),random.randrange(5,9),random.randrange(1,200)))
 
     if pygame.key.get_pressed()[pygame.K_RIGHT]:
-        pass
+        particles.append(Particle(random.randrange(0,800),random.randrange(590,600),random.randrange(-2,5),random.randrange(-9,-2),random.randrange(1,200)))
 
 while game_is_running:
 
