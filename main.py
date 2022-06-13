@@ -44,7 +44,8 @@ def draw():
     screen.blit(background, (0, 0))
 
     for part in particles:
-        screen.blit(part.sprite, (part.xPos, part.yPos))
+        # screen.blit(part.sprite, (part.xPos, part.yPos))
+        pygame.draw.rect(screen, pygame.Color("cyan2"), (part.xPos, part.yPos, 2, 2))
     pygame.display.flip()
 
 def getInput():
