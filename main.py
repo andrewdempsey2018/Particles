@@ -1,3 +1,4 @@
+from shutil import move
 import sys, pygame
 from particle import Particle
 import random
@@ -21,7 +22,8 @@ interpolation = 0.0
 
 game_is_running = True
 
-particles = []
+moveGroup = []
+arcGroup = []
 
 # Fill background
 background = pygame.Surface(screen.get_size())
@@ -31,11 +33,17 @@ background.fill((0, 0, 0))
 
 def updateGame(interpolation):
 
-    for part in particles:
+    for part in moveGroup:
         part.move(interpolation)
         part.life -= 1
         if part.life == 0:
-            particles.remove(part)
+            moveGroup.remove(part)
+
+    for part in arcGroup:
+        part.arc(interpolation)
+        part.life -= 1
+        if part.life == 0:
+            arcGroup.remove(part)
             
 
     getInput()
@@ -43,17 +51,21 @@ def updateGame(interpolation):
 def draw():
     screen.blit(background, (0, 0))
 
-    for part in particles:
-        # screen.blit(part.sprite, (part.xPos, part.yPos))
+    for part in moveGroup:
         pygame.draw.rect(screen, pygame.Color("cyan2"), (part.xPos, part.yPos, 2, 2))
+
+    for part in arcGroup:
+        pygame.draw.rect(screen, pygame.Color("red"), (part.xPos, part.yPos, 2, 2))
+
     pygame.display.flip()
 
 def getInput():
-    if pygame.key.get_pressed()[pygame.K_LEFT]:
-        particles.append(Particle(random.randrange(0,800),random.randrange(0,10),random.randrange(-2,5),random.randrange(5,9),random.randrange(1,200)))
+    if pygame.key.get_pressed()[pygame.K_q]:
+        moveGroup.append(Particle(random.randrange(0,800),random.randrange(0,10),random.randrange(-2,5),random.randrange(5,9),random.randrange(1,200)))
 
-    if pygame.key.get_pressed()[pygame.K_RIGHT]:
-        particles.append(Particle(random.randrange(0,800),random.randrange(590,600),random.randrange(-2,5),random.randrange(-9,-2),random.randrange(1,200)))
+    if pygame.key.get_pressed()[pygame.K_w]:
+        arcGroup.append(Particle(random.randrange(0,800),random.randrange(0,10),2,random.randrange(5,9),random.randrange(1,200)))
+
 
 while game_is_running:
 
