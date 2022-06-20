@@ -83,6 +83,21 @@ def getInput():
     if pygame.key.get_pressed()[pygame.K_r]:
         bounceGroup.append(Particle(random.randrange(0,800),random.randrange(0,10),2,random.randrange(5,9),random.randrange(1,200), random.randrange(5,19)))
 
+    if pygame.key.get_pressed()[pygame.K_a]:
+        for part in bounceGroup:
+            part.moveSpeedX = random.randrange(1,5)
+            part.moveSpeedY = random.randrange(1,5)
+
+    if pygame.mouse.get_pressed()[2]:
+        for part in bounceGroup:
+            if part.xPos > pygame.mouse.get_pos()[0]:
+                part.xPos -= 1
+            if part.xPos < pygame.mouse.get_pos()[0]:
+                part.xPos += 1
+            if part.yPos > pygame.mouse.get_pos()[1]:
+                part.yPos -= 1
+            if part.yPos < pygame.mouse.get_pos()[1]:
+                part.yPos += 1
     
 
 
