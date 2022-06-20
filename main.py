@@ -24,6 +24,7 @@ game_is_running = True
 
 moveGroup = []
 arcGroup = []
+bounceGroup = []
 
 # Fill background
 background = pygame.Surface(screen.get_size())
@@ -40,10 +41,17 @@ def updateGame(interpolation):
             moveGroup.remove(part)
 
     for part in arcGroup:
-        part.arc(interpolation)
+        part.move(interpolation)
         part.life -= 1
         if part.life == 0:
             arcGroup.remove(part)
+
+    for part in bounceGroup:
+        part.move(interpolation)
+        if part.xPos >= screenWidth or part.xPos <= 0:
+            part.moveSpeedX = part.moveSpeedX * -1
+        if part.yPos >= screenHeight or part.yPos <= 0:
+            part.moveSpeedY = part.moveSpeedY * -1
             
 
     getInput()
@@ -52,19 +60,30 @@ def draw():
     screen.blit(background, (0, 0))
 
     for part in moveGroup:
-        pygame.draw.rect(screen, pygame.Color("cyan2"), (part.xPos, part.yPos, 2, 2))
+        pygame.draw.rect(screen, pygame.Color(10, 255, 10), (part.xPos, part.yPos, part.size, part.size))
 
     for part in arcGroup:
-        pygame.draw.rect(screen, pygame.Color("red"), (part.xPos, part.yPos, 2, 2))
+        pygame.draw.rect(screen, pygame.Color(100, 25, 100), (part.xPos, part.yPos, part.size, part.size))
+    
+    for part in bounceGroup:
+        pygame.draw.rect(screen, pygame.Color(200, 25, 10), (part.xPos, part.yPos, part.size, part.size))
 
     pygame.display.flip()
 
 def getInput():
     if pygame.key.get_pressed()[pygame.K_q]:
-        moveGroup.append(Particle(random.randrange(0,800),random.randrange(0,10),random.randrange(-2,5),random.randrange(5,9),random.randrange(1,200)))
+        moveGroup.append(Particle(random.randrange(0,800),random.randrange(0,10),random.randrange(-2,5),random.randrange(5,9),random.randrange(1,200), random.randrange(2,6)))
 
     if pygame.key.get_pressed()[pygame.K_w]:
-        arcGroup.append(Particle(random.randrange(0,800),random.randrange(0,10),2,random.randrange(5,9),random.randrange(1,200)))
+        arcGroup.append(Particle(random.randrange(0,800),random.randrange(0,10),2,random.randrange(5,9),random.randrange(1,200), random.randrange(2,6)))
+
+    if pygame.key.get_pressed()[pygame.K_e]:
+        bounceGroup.append(Particle(random.randrange(0,800),random.randrange(0,10),2,random.randrange(5,9),random.randrange(1,200), random.randrange(5,9)))
+
+    if pygame.key.get_pressed()[pygame.K_r]:
+        bounceGroup.append(Particle(random.randrange(0,800),random.randrange(0,10),2,random.randrange(5,9),random.randrange(1,200), random.randrange(5,19)))
+
+    
 
 
 while game_is_running:
