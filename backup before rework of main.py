@@ -1,4 +1,3 @@
-from shutil import move
 import sys, pygame
 from particle import Particle
 import random
@@ -25,6 +24,8 @@ game_is_running = True
 moveGroup = []
 arcGroup = []
 bounceGroup = []
+explodeGroup = []
+updownGroup = []
 
 # Fill background
 background = pygame.Surface(screen.get_size())
@@ -52,6 +53,25 @@ def updateGame(interpolation):
             part.moveSpeedX = part.moveSpeedX * -1
         if part.yPos >= screenHeight or part.yPos <= 0:
             part.moveSpeedY = part.moveSpeedY * -1
+
+    for part in explodeGroup:
+        part.move(interpolation)
+        part.life -= 1
+        if part.life == 0:
+            explodeGroup.remove(part)
+
+    for part in updownGroup:
+        part.move(5)
+        part.moveSpeedX += 0.025
+        if part.moveSpeedX >= 00:
+            part.moveSpeedX = -10
+        part.moveSpeedY += 0.025
+        if part.moveSpeedY >= 10:
+            part.moveSpeedY = -10
+        if part.xPos >= screenWidth or part.xPos <= 0:
+            part.moveSpeedX = part.moveSpeedX * -1
+        if part.yPos >= screenHeight or part.yPos <= 0:
+            part.moveSpeedY = part.moveSpeedY * -1
             
 
     getInput()
@@ -67,6 +87,12 @@ def draw():
     
     for part in bounceGroup:
         pygame.draw.rect(screen, pygame.Color(200, 25, 10), (part.xPos, part.yPos, part.size, part.size))
+
+    for part in explodeGroup:
+        pygame.draw.rect(screen, pygame.Color(120, 125, 200), (part.xPos, part.yPos, part.size, part.size))
+
+    for part in updownGroup:
+        pygame.draw.rect(screen, pygame.Color(245, 245, 65), (part.xPos, part.yPos, part.size, part.size))
 
     pygame.display.flip()
 
@@ -98,7 +124,34 @@ def getInput():
                 part.yPos -= 1
             if part.yPos < pygame.mouse.get_pos()[1]:
                 part.yPos += 1
-    
+
+    if pygame.key.get_pressed()[pygame.K_s]:
+        for part in bounceGroup:
+            if part.xPos > pygame.mouse.get_pos()[0]:
+                part.xPos = pygame.mouse.get_pos()[0]
+            if part.xPos < pygame.mouse.get_pos()[0]:
+                part.xPos = pygame.mouse.get_pos()[0]
+            if part.yPos > pygame.mouse.get_pos()[1]:
+                part.yPos = pygame.mouse.get_pos()[1]
+            if part.yPos < pygame.mouse.get_pos()[1]:
+                part.yPos = pygame.mouse.get_pos()[1]
+
+    if pygame.key.get_pressed()[pygame.K_d]:
+        for part in bounceGroup:
+            part.xPos = random.randrange(0,screenWidth)
+            part.yPos = random.randrange(0,screenHeight)
+
+    if pygame.mouse.get_pressed()[0]:
+        explodeGroup.append(Particle(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1],2,random.randrange(5,9),random.randrange(1,200), random.randrange(3,5)))
+
+    if pygame.key.get_pressed()[pygame.K_f]:
+        explodeGroup.append(Particle(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1],random.randrange(-10,10),random.randrange(-10,10),random.randrange(10,200), random.randrange(3,5)))
+
+    if pygame.key.get_pressed()[pygame.K_g]:
+        bounceGroup.append(Particle(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1],random.randrange(-10,10),random.randrange(-10,10),random.randrange(10,200), random.randrange(3,10)))
+
+    if pygame.key.get_pressed()[pygame.K_h]:
+        updownGroup.append(Particle(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1],random.randrange(-10,10),random.randrange(-10,10),random.randrange(10,200), random.randrange(3,10)))
 
 
 while game_is_running:

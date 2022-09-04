@@ -2,26 +2,26 @@
 
 ## Intro
 
-Simple particle system for games using Pygame.
+Simple particle system for games using Pygame
 
 ---
 
 ![screenshot 1](assets/readme/scr1.png)
 
-## Controls
+## Demos
 
-q - add standard particle 1
+### Snow
 
-w - add standard particle 2
+### Fireworks
 
-e - add small bounce particle
+### Shooter
 
-r - add large bounce particle
+### TestArea
 
-right mouse - move bounce particles towards mouse position
+### Terrain
 
-a - explode all particles
+### Flame
 
----
+### Lightshow
 
 ## Method summary
