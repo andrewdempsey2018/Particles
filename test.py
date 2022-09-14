@@ -27,10 +27,7 @@ background = pygame.Surface(screen.get_size())
 background = background.convert()
 background.fill((0, 0, 0))
 
-black = (0, 0, 0)
-peach = (255, 175, 128)
-green = (0, 104, 55)
-white = (255, 255, 255)
+
 
 particles = []
 
@@ -41,7 +38,7 @@ pygame.time.set_timer(NEW_SHAPE, 1000)
 def updateGame(interpolation):
 
     for part in particles:
-        part.orbit(interpolation, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
+        part.orbit(interpolation)
 
     getInput()
 
@@ -50,15 +47,14 @@ def draw():
     screen.blit(background, (0, 0))
 
     for part in particles:
-        pygame.draw.rect(screen, pygame.Color(10, 255, 10),
-                         (part.xPos, part.yPos, part.size, part.size))
+        part.draw(screen)
 
     pygame.display.flip()
 
 
 def getInput():
     if pygame.mouse.get_pressed()[0]:
-        particles.append(Particle(200, random.randrange(100, 200), 1, 1, 1, 8))
+        pass
 
 
 while game_is_running:
@@ -68,7 +64,7 @@ while game_is_running:
             sys.exit()
 
         if event.type == NEW_SHAPE:  
-            particles.append(Particle(200, random.randrange(100, 200), 1, 1, 1, 8))
+            particles.append(Particle(random.randrange(100, 600), random.randrange(100, 600), 1, 1, 1, 4, random.randrange(10, 700), random.randrange(10, 600), 200))
 
     loops = 0
 
