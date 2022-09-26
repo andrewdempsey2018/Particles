@@ -1,18 +1,20 @@
 import math
 import pygame
 
-RED = (255, 0, 0)
-ORANGE = (255, 165, 0)
-YELLOW = (255, 255, 0)
-GREEN = (0, 128, 0)
-BLUE = (0, 0, 255)
-PURPLE = (128, 0, 255)
-PINK = (255, 0, 128)
+colours = {
+    0: (255, 0, 0), #red
+    1: (255, 165, 0), #orange
+    2: (255, 255, 0), #yellow
+    3: (0, 128, 0), #green
+    4: (0, 0, 255), #blue
+    5: (128, 0, 255), #purple
+    6: (255, 0, 128) #pink
 
+}
 
 class Particle:
     def __init__(self, xPos=400, yPos=300, speedX=1, speedY=1, sizeX=3, sizeY=3,
-                 orbitCenterX=400, orbitCenterY=300, radius=150, angle=0, colour=RED):
+                 orbitCenterX=400, orbitCenterY=300, radius=150, angle=0, colour=1):
         self.xPos = xPos
         self.yPos = yPos
         self.sizeX = sizeX
@@ -23,7 +25,7 @@ class Particle:
         self.orbitCenterX = orbitCenterX
         self.orbitCenterY = orbitCenterY
         self.radius = radius
-        self.colour = colour
+        self.colour = colours[colour]
 
     def move(self, interpolation):
         self.xPos += self.speedX * interpolation

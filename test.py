@@ -4,18 +4,12 @@ import sys
 from particle import Particle
 import random
 
+from wheel import Wheel
+
 pygame.init()
 
 screenWidth = 800
 screenHeight = 600
-
-RED = (255, 0, 0)
-ORANGE = (255, 165, 0)
-YELLOW = (255, 255, 0)
-GREEN = (0, 128, 0)
-BLUE = (0, 0, 255)
-PURPLE = (128, 0, 255)
-PINK = (255, 0, 128)
 
 size = width, height = screenWidth, screenHeight
 
@@ -42,12 +36,13 @@ particles = []
 
 NEW_SHAPE = pygame.USEREVENT
 
-pygame.time.set_timer(NEW_SHAPE, 1000)
+pygame.time.set_timer(NEW_SHAPE, 100)
 
 
 def updateGame(interpolation):
 
     for part in particles:
+        #part.move(interpolation)
         part.orbit(interpolation)
 
     getInput()
@@ -67,34 +62,7 @@ def getInput():
         pass
 
     if pygame.key.get_pressed()[pygame.K_q]:
-        for part in particles:
-            part.radius -= 1
-
-    if pygame.key.get_pressed()[pygame.K_w]:
-        for part in particles:
-            part.radius += 1
-
-    if pygame.key.get_pressed()[pygame.K_e]:
-        for part in particles:
-            part.speedX += 0.0025
-
-    if pygame.key.get_pressed()[pygame.K_r]:
-        for part in particles:
-            part.speedX -= 0.0025
-
-    if pygame.key.get_pressed()[pygame.K_t]:
-        for part in particles:
-            part.sizeX -= 0.25
-            part.sizeY -= 0.25
-
-    if pygame.key.get_pressed()[pygame.K_y]:
-        for part in particles:
-            part.sizeX += 0.25
-            part.sizeY += 0.25
-
-    if pygame.key.get_pressed()[pygame.K_u]:
-        for part in particles:
-            part.orbitCenterX += 0.25
+        pass
 
 
 while game_is_running:
@@ -104,15 +72,8 @@ while game_is_running:
             sys.exit()
 
         if event.type == NEW_SHAPE:
-            particles.append(Particle(sizeX=5, speedX=0.025))
-            particles.append(Particle(sizeX=5, colour=BLUE,
-                             orbitCenterX=200, orbitCenterY=200, radius=75, speedX=0.025))
-            particles.append(Particle(sizeX=4, colour=GREEN,
-                             orbitCenterX=100, orbitCenterY=100, radius=95, speedX=-0.025))
-            particles.append(Particle(sizeX=5, colour=PINK,
-                             orbitCenterX=300, orbitCenterY=300, radius=65, speedX=0.025))
-            particles.append(Particle(sizeX=4, colour=PURPLE,
-                             orbitCenterX=400, orbitCenterY=400, radius=105, speedX=-0.025))
+            #particles.append(Particle(sizeX=3, sizeY=3, speedX=0.025, orbitCenterX=400, orbitCenterY=300, angle=20, radius=45, colour=GREEN))
+            Wheel(particles)
 
     loops = 0
 
@@ -124,4 +85,5 @@ while game_is_running:
 
     interpolation = float(pygame.time.get_ticks() +
                           SKIP_TICKS - next_game_tick) / float(SKIP_TICKS)
+
     draw()
