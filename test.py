@@ -36,7 +36,7 @@ particles = []
 
 NEW_SHAPE = pygame.USEREVENT
 
-pygame.time.set_timer(NEW_SHAPE, 100)
+pygame.time.set_timer(NEW_SHAPE, 1000)
 
 
 def updateGame(interpolation):
@@ -44,6 +44,7 @@ def updateGame(interpolation):
     for part in particles:
         #part.move(interpolation)
         part.orbit(interpolation)
+        #part.radius += 0.005
 
     getInput()
 
